@@ -1,6 +1,6 @@
 FROM centos
 
-MAINTAINER cookieYe 2017-12-28
+MAINTAINER devops
 
 EXPOSE 8000
 
@@ -19,15 +19,15 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
 WORKDIR /opt/
 
 
-RUN git clone https://github.com/cookieY/Yearning.git && \
-    cd /opt/Yearning/src && pip3 install -r requirements.txt && \
-    cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
-    cp -rf /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
-    cp -rf /opt/Yearning/install/docker_start.sh /usr/local/bin/ && \ 
-    cp -rf /opt/Yearning/webpage/dist/* /usr/share/nginx/html/ && \
-    cd /opt/Yearning/install/ && tar xvf inception.tar && \
+RUN git clone git@git.gungunqian.cn:qiangungun/ops.git&& \
+    cd /opt/ops/src && pip3 install -r requirements.txt && \
+    cp -rf /opt/ops/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
+    cp -rf /opt/ops/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
+    cp -rf /opt/ops/install/docker_start.sh /usr/local/bin/ && \ 
+    cp -rf /opt/ops/webpage/dist/* /usr/share/nginx/html/ && \
+    cd /opt/ops/install/ && tar xvf inception.tar && \
     chmod 755 /usr/local/bin/docker_start.sh
 
-WORKDIR /opt/Yearning/src
+WORKDIR /opt/ops/src
 
 ENTRYPOINT docker_start.sh
