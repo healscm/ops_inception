@@ -36,6 +36,14 @@
             sortable: true
           },
           {
+            title: '任务名',
+            key: 'task_name'
+          },
+          {
+            title: '任务类型',
+            key: 'task_type'
+          },
+          {
             title: '工单说明',
             key: 'text'
           },
@@ -108,29 +116,6 @@
               }
             }
           }
-          // , {
-          //   title: '操作',
-          //   key: 'action',
-          //   align: 'center',
-          //   render: (h, params) => {
-          //     return h('div', [
-          //       h('Button', {
-          //         props: {
-          //           size: 'small',
-          //           type: 'text'
-          //         },
-          //         on: {
-          //           click: () => {
-          //             this.$router.push({
-          //               name: 'orderlist',
-          //               query: {workid: params.row.work_id, id: params.row.id, status: params.row.status, type: params.row.type}
-          //             })
-          //           }
-          //         }
-          //       }, '详细信息')
-          //     ])
-          //   }
-          // }
         ],
         page_number: 1,
         computer_room: util.computer_room,

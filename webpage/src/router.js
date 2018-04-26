@@ -86,7 +86,7 @@ export const appRouter = [
   },
 {
     path: '/myorder',
-    icon: 'home',
+    icon: 'edit',
     name: 'myorder',
     title: '工单详情',
     component: Index,
@@ -142,15 +142,16 @@ export const appRouter = [
     title: '日常工单提交',
     component: Index,
     children: [
+      // {
+      //   path: 'gitbranch',
+      //   name: 'gitbranch',
+      //   title: 'git分支',
+      //   'icon': 'compose',
+      //   component: resolve => {
+      //     require(['./components/Gitorder/Gentask.vue'], resolve)
+      //   }
+      // },
       {
-        path: 'gitbranch',
-        name: 'gitbranch',
-        title: 'git分支',
-        'icon': 'compose',
-        component: resolve => {
-          require(['./components/Gitorder/Gentask.vue'], resolve)
-        }
-      }, {
         path: 'other',
         name: 'other',
         title: '其他',
@@ -208,7 +209,7 @@ export const appRouter = [
 
 export const orderList = {
   path: '/',
-  icon: 'home',
+  icon: 'edit',
   name: 'main',
   title: '首页',
   component: Index,

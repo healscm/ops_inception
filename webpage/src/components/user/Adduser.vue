@@ -90,6 +90,28 @@
           <Input v-model="editInfodForm.department" placeholder="请输入新部门"></Input>
         </FormItem>
         <template>
+          <FormItem label="日常工单提交:">
+            <RadioGroup v-model="permission.git">
+              <Radio label="1">是</Radio>
+              <Radio label="0">否</Radio>
+            </RadioGroup>
+          </FormItem>
+        </template>
+        <template>
+          <FormItem label="日常工单详情:">
+            <RadioGroup v-model="permission.dailytail">
+              <Radio label="1">是</Radio>
+              <Radio label="0">否</Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem label="数据库工单详情:">
+            <RadioGroup v-model="permission.dailytask">
+              <Radio label="1">是</Radio>
+              <Radio label="0">否</Radio>
+            </RadioGroup>
+          </FormItem>
+        </template>
+        <template>
           <FormItem label="DDL及索引权限:">
             <RadioGroup v-model="permission.ddl">
               <Radio label="1">是</Radio>
@@ -276,6 +298,8 @@
       return {
         percent: 0,
         permission: {
+          dailytail: '0',
+          dailytask: '0',
           ddl: '0',
           ddlcon: [],
           dml: '0',

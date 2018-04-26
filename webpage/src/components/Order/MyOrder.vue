@@ -16,7 +16,7 @@
         </Col>
       </Row>
       <br>
-      <Page :total="page_number" show-elevator @on-change="currentpage" :page-size="20"></Page>
+      <Page :total="page_number" show-elevator @on-change="currentpage" :page-size="10"></Page>
     </Card>
   </Row>
 </div>

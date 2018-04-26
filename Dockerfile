@@ -1,6 +1,6 @@
 FROM centos
 
-MAINTAINER devops
+MAINTAINER qiangungun
 
 EXPOSE 8000
 
@@ -19,15 +19,15 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
 WORKDIR /opt/
 
 
-RUN git clone git@git.gungunqian.cn:qiangungun/ops.git&& \
-    cd /opt/ops/src && pip3 install -r requirements.txt && \
-    cp -rf /opt/ops/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
-    cp -rf /opt/ops/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
-    cp -rf /opt/ops/install/docker_start.sh /usr/local/bin/ && \ 
-    cp -rf /opt/ops/webpage/dist/* /usr/share/nginx/html/ && \
-    cd /opt/ops/install/ && tar xvf inception.tar && \
+RUN git clone git@git.gungunqian.cn:qiangungun/ops_inception.git && \
+    cd /opt/ops_inception/src && pip3 install -r requirements.txt && \
+    cp -rf /opt/ops_inception/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
+    cp -rf /opt/ops_inception/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
+    cp -rf /opt/ops_inception/install/docker_start.sh /usr/local/bin/ && \ 
+    cp -rf /opt/ops_inception/webpage/dist/* /usr/share/nginx/html/ && \
+    cd /opt/ops_inception/install/ && tar xvf inception.tar && \
     chmod 755 /usr/local/bin/docker_start.sh
 
-WORKDIR /opt/ops/src
+WORKDIR /opt/ops_inception/src
 
 ENTRYPOINT docker_start.sh

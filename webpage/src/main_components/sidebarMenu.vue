@@ -61,6 +61,7 @@ export default {
   data () {
     return {
       filtermenulist: {
+        'git': '',
         'mysqlorderlist': '',
         'mydailyorder': '',
         'ddledit': '',
@@ -104,12 +105,12 @@ export default {
     axios.get(`${util.url}/homedata/menu`)
       .then(res => {
         let c = JSON.parse(res.data)
-        this.filtermenulist.mysqlorderlist = c.base
-        this.filtermenulist.mydailyorder = c.base
+        this.filtermenulist.mysqlorderlist = c.dailytail
+        this.filtermenulist.mydailyorder = c.dailytask
         this.filtermenulist.ddledit = c.ddl
         this.filtermenulist.dmledit = c.dml
         this.filtermenulist.gitbranch = c.base
-        this.filtermenulist.other = c.base
+        this.filtermenulist.other = c.git
         this.filtermenulist['view-dml'] = c.dic
         this.filtermenulist['serach-sql'] = c.query
         this.filtermenulist['management-user'] = c.user

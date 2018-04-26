@@ -38,33 +38,54 @@
 
 <template>
 <div>
-  <Row>
-    <Card>
-      <!--<p slot="title">-->
-        <!--<Icon type="person"></Icon>-->
-        <!--审核工单-->
-      <!--</p>-->
-      <Tabs value="name1">
-        <TabPane label="数据库审核工单" name="name1"></TabPane>
-        <TabPane label="日常审核工单" name="name2"></TabPane>
-      </Tabs>
-      <Row>
-        <Col span="24">
-        <Poptip
-          confirm
-          title="您确认删除这些工单信息吗?"
-          @on-ok="delrecordData"
+  <Tabs type="card">
+    <TabPane label="数据库工单">
+        <Card>
+          <p slot="title">
+            <Icon type="person"></Icon>
+            审核工单
+          </p>
+          <Row>
+            <Col span="24">
+            <Poptip
+              confirm
+              title="您确认删除这些工单信息吗?"
+              @on-ok="delrecordData"
+            >
+              <Button type="text" style="margin-left: -1%">删除记录</Button>
+            </Poptip>
+            <Button type="text" style="margin-left: -1%" @click.native="mou_data()">刷新</Button>
+            <Table border :columns="columns6" :data="tmp" stripe ref="selection" @on-selection-change="delrecordList"></Table>
+            <br>
+            <Page :total="pagenumber" show-elevator @on-change="splicpage" :page-size="10" ref="page"></Page>
+            </Col>
+          </Row>
+        </Card>
+    </TabPane>
+    <TabPane label="日常工单">
+      <card>
+        <p slot="title">
+          <Icon type="person"></Icon>
+          审核工单
+        </p>
+        <Row>
+          <Col span="24">
+          <Poptip
+            confirm
+            title="您确认删除这些工单信息吗?"
+            @on-ok="delrecordData"
           >
-        <Button type="text" style="margin-left: -1%">删除记录</Button>
-        </Poptip>
-        <Button type="text" style="margin-left: -1%" @click.native="mou_data()">刷新</Button>
-        <Table border :columns="columns6" :data="tmp" stripe ref="selection" @on-selection-change="delrecordList"></Table>
-        <br>
-        <Page :total="pagenumber" show-elevator @on-change="mou_data" :page-size="20" ref="page"></Page>
-        </Col>
-      </Row>
-    </Card>
-  </Row>
+            <Button type="text" style="margin-left: -1%">删除记录</Button>
+          </Poptip>
+          <Button type="text" style="margin-left: -1%" @click.native="mou_daily()">刷新</Button>
+          <Table border :columns="columns5" :data="approve" stripe ref="selection" @on-selection-change="delrecordList"></Table>
+          <br>
+          <Page :total="pagenumber" show-elevator @on-change="splicpage2" :page-size="10" ref="page"></Page>
+          </Col>
+        </Row>
+      </card>
+    </TabPane>
+  </Tabs>
   <Modal v-model="modal2" width="800">
     <p slot="header" style="color:#f60;font-size: 16px">
       <Icon type="information-circled"></Icon>
@@ -110,6 +131,43 @@
       </template>
     </div>
   </Modal>
+  <Modal v-model="modal3" width="800">
+    <p slot="header" style="color:#f60;font-size: 16px">
+      <Icon type="information-circled"></Icon>
+      <span>日常工单详细信息</span>
+    </p>
+    <Form label-position="right">
+      <FormItem label="id:">
+        <span>{{ formitem2.id }}</span>
+      </FormItem>
+      <FormItem label="工单编号:">
+        <span>{{ formitem2.work_id }}</span>
+      </FormItem>
+      <FormItem label="任务名:">
+        <span>{{ formitem2.task_name }}</span>
+      </FormItem>
+      <FormItem label="任务类型:">
+        <span>{{ formitem2.task_type }}</span>
+      </FormItem>
+      <FormItem label="提交时间:">
+        <span>{{ formitem2.date }}</span>
+      </FormItem>
+      <FormItem label="提交人:">
+        <span>{{ formitem2.username }}</span>
+      </FormItem>
+
+      <FormItem label="工单说明:">
+        <span>{{ formitem2.text }}</span>
+      </FormItem>
+    </Form>
+    <div slot="footer">
+      <Button @click="modal3 = false">取消</Button>
+      <template v-if="switch_show">
+        <Button type="error" @click="out_button2()" >驳回</Button>
+        <Button type="success" @click="put_button2()" >同意</Button>
+      </template>
+    </div>
+  </Modal>
 
   <Modal v-model="reject.reje" @on-ok="rejecttext">
     <p slot="header" style="color:#f60;font-size: 16px">
@@ -117,6 +175,13 @@
       <span>SQL工单驳回理由说明</span>
     </p>
     <Input v-model="reject.textarea" type="textarea" :autosize="{minRows: 15,maxRows: 15}" placeholder="请填写驳回说明"></Input>
+  </Modal>
+  <Modal v-model="rejectdaily.reje" @on-ok="rejecttext2">
+    <p slot="header" style="color:#f60;font-size: 16px">
+      <Icon type="information-circled"></Icon>
+      <span>日常工单驳回理由说明</span>
+    </p>
+    <Input v-model="rejectdaily.textarea" type="textarea" :autosize="{minRows: 15,maxRows: 15}" placeholder="请填写驳回说明"></Input>
   </Modal>
 
   <Modal
@@ -169,6 +234,168 @@ export default {
   name: 'Sqltable',
   data () {
     return {
+      columns5: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '工单编号:',
+          key: 'work_id',
+          sortable: true,
+          sortType: 'desc',
+          width: 250
+        },
+        {
+          title: '任务名',
+          key: 'task_name'
+        },
+        {
+          title: '工单类型',
+          key: 'task_type'
+        },
+        {
+          title: '工单说明:',
+          key: 'text'
+        },
+        {
+          title: '提交时间:',
+          key: 'date',
+          sortable: true,
+          width: 150
+        },
+        {
+          title: '提交人',
+          key: 'username',
+          sortable: true,
+          width: 150
+        },
+        {
+          title: '状态',
+          key: 'status',
+          width: 150,
+          render: (h, params) => {
+            const row = params.row
+            let color = ''
+            let text = ''
+            if (row.status === 2) {
+              color = 'blue'
+              text = '待审核'
+            } else if (row.status === 0) {
+              color = 'red'
+              text = '驳回'
+            } else if (row.status === 1) {
+              color = 'green'
+              text = '已执行'
+            } else {
+              color = 'yellow'
+              text = '执行中'
+            }
+            return h('Tag', {
+              props: {
+                type: 'dot',
+                color: color
+              }
+            }, text)
+          },
+          sortable: true,
+          filters: [{
+            label: '已执行',
+            value: 1
+          },
+            {
+              label: '驳回',
+              value: 0
+            },
+            {
+              label: '待审核',
+              value: 2
+            },
+            {
+              label: '执行中',
+              value: 3
+            }
+          ],
+          //            filterMultiple: false 禁止多选,
+          filterMethod (value, row) {
+            if (value === 1) {
+              return row.status === 1
+            } else if (value === 2) {
+              return row.status === 2
+            } else if (value === 0) {
+              return row.status === 0
+            } else if (value === 3) {
+              return row.status === 3
+            }
+          }
+        },
+        {
+          title: '操作',
+          key: 'action',
+          width: 200,
+          align: 'center',
+          render: (h, params) => {
+            if (params.row.status !== 1) {
+              if (params.row.status === 3 && params.row.type === 0) {
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      size: 'small',
+                      type: 'text'
+                    },
+                    on: {
+                      click: () => {
+                        this.edit_tab2(params.index)
+                      }
+                    }
+                  }, '查看'),
+                  h('Button', {
+                    props: {
+                      size: 'small',
+                      type: 'text'
+                    },
+                    on: {
+                      click: () => {
+                        this.oscsha1 = ''
+                        this.osc = true
+                      }
+                    }
+                  }, 'osc进度')
+                ])
+              } else {
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      size: 'small',
+                      type: 'text'
+                    },
+                    on: {
+                      click: () => {
+                        this.edit_tab2(params.index)
+                      }
+                    }
+                  }, '查看')
+                ])
+              }
+            } else {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    size: 'small',
+                    type: 'text'
+                  },
+                  on: {
+                    click: () => {
+                      this.edit_tab2(params.index)
+                    }
+                  }
+                }, '查看')
+              ])
+            }
+          }
+        }
+      ],
       columns6: [
         {
           type: 'selection',
@@ -342,7 +569,17 @@ export default {
         }
       ],
       modal2: false,
+      modal3: false,
       sql: null,
+      formitem2: {
+        workid: '',
+        date: '',
+        username: '',
+        dataadd: '',
+        database: '',
+        att: '',
+        id: null
+      },
       formitem: {
         workid: '',
         date: '',
@@ -395,7 +632,12 @@ export default {
         reje: false,
         textarea: ''
       },
+      rejectdaily: {
+        reje: false,
+        textarea: ''
+      },
       tmp: [],
+      approve: [],
       pagenumber: 1,
       delrecord: [],
       togoing: null,
@@ -417,6 +659,13 @@ export default {
       this.tmp[index].status === 2 ? this.switch_show = true : this.switch_show = false
       this.sql = this.tmp[index].sql.split(';')
     },
+    edit_tab2: function (index) {
+      this.togoing = index
+      this.dataId = []
+      this.modal3 = true
+      this.formitem2 = this.approve[index]
+      this.approve[index].status === 2 ? this.switch_show = true : this.switch_show = false
+    },
     put_button () {
       this.modal2 = false
       this.tmp[this.togoing].status = 3
@@ -437,9 +686,52 @@ export default {
           util.ajanxerrorcode(this, error)
         })
     },
+    put_button2 () {
+      this.modal3 = false
+      this.approve[this.togoing].status = 1
+      axios.put(`${util.url}/approvedaily`, {
+        'type': 1,
+        'from_user': Cookies.get('user'),
+        'to_user': this.formitem2.username,
+        'id': this.formitem2.id
+      })
+        .then(res => {
+          this.$Notice.success({
+            title: '执行成功',
+            desc: res.data
+          })
+          this.$refs.page.currentPage = 1
+        })
+        .catch(error => {
+          util.ajanxerrorcode(this, error)
+        })
+    },
     out_button () {
       this.modal2 = false
       this.reject.reje = true
+    },
+    out_button2 () {
+      this.modal3 = false
+      this.rejectdaily.reje = true
+    },
+    rejecttext2 () {
+      axios.put(`${util.url}/approvedaily`, {
+        'type': 0,
+        'from_user': Cookies.get('user'),
+        'text': this.rejectdaily.textarea,
+        'to_user': this.formitem2.username,
+        'id': this.formitem2.id
+      })
+        .then(res => {
+          this.$Notice.warning({
+            title: res.data
+          })
+          this.mou_daily()
+          this.$refs.page.currentPage = 1
+        })
+        .catch(error => {
+          util.ajanxerrorcode(this, error)
+        })
     },
     rejecttext () {
       axios.put(`${util.url}/audit_sql`, {
@@ -490,11 +782,29 @@ export default {
           util.ajanxerrorcode(this, error)
         })
     },
+    splicpage (page) {
+      this.mou_data(page)
+      console.log(page)
+    },
+    splicpage2 (page) {
+      this.mou_daily(page)
+    },
     mou_data (vl = 1) {
       axios.get(`${util.url}/audit_sql?page=${vl}&username=${Cookies.get('user')}`)
         .then(res => {
           this.tmp = res.data.data
           this.tmp.forEach((item) => { (item.backup === 1) ? item.backup = '是' : item.backup = '否' })
+          this.pagenumber = res.data.page.alter_number
+        })
+        .catch(error => {
+          util.ajanxerrorcode(this, error)
+        })
+    },
+    mou_daily (vl = 1) {
+      axios.get(`${util.url}/approvedaily?page=${vl}&username=${Cookies.get('user')}`)
+        .then(res => {
+          this.approve = res.data.data
+          this.approve.forEach((item) => { (item.backup === 1) ? item.backup = '是' : item.backup = '否' })
           this.pagenumber = res.data.page.alter_number
         })
         .catch(error => {
@@ -551,6 +861,7 @@ export default {
   },
   mounted () {
     this.mou_data()
+    this.mou_daily()
   }
 }
 </script>

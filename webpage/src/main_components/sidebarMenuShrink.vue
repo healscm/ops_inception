@@ -68,8 +68,9 @@ export default {
       currentPageName: this.$route.name,
       openedSubmenuArr: this.$store.state.openedSubmenuArr,
       filtermenulist: {
-        'mysqlorderlist': '',
-        'mydailyorder': '',
+        'git': '1',
+        'mysqlorderlist': '1',
+        'mydailyorder': '1',
         'ddledit': '',
         'dmledit': '',
         'view-dml': '',
@@ -101,8 +102,9 @@ export default {
     axios.get(`${util.url}/homedata/menu`)
       .then(res => {
         let c = JSON.parse(res.data)
-        this.filtermenulist.mydailyorder = c.base
-        this.filtermenulist.mysqlorderlist = c.base
+        this.filtermenulist.mydailyorder = c.dailytask
+        this.filtermenulist.mysqlorderlist = c.dailytail
+        this.filtermenulist.other = c.git
         this.filtermenulist.orderlist = c.base
         this.filtermenulist.ddledit = c.ddl
         this.filtermenulist.dmledit = c.dml
