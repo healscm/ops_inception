@@ -1,9 +1,4 @@
 #!/bin/bash
-#
-# Description: Yearning restart/stop/show/install script
-# Date: 2018-02-26
-# Author: Pengdongwen
-# Blog: www.ywnds.com
 
 # Network
 ping -c 1 -W 3 www.baidu.com &> /dev/null
@@ -18,7 +13,7 @@ echo "
   1: Restart all services                 |
   2: Stop all services                    |
   3: Show all service information         |
-  4: One-click Installation Yearning      |
+  4: One-click Installation ops_inception |
                                           |
 -------------------------------------------
 "
@@ -129,21 +124,21 @@ else
 fi
 
 # 05
-Data="05) Git Clone Yearning, Please wait..."
+Data="05) Git Clone ops_inception, Please wait..."
 echo -n $Data
-cd /opt && rm -fr Yearning_back &> /dev/null && mv Yearning Yearning_back &> /dev/null
-git clone https://github.com/cookieY/Yearning.git &>/dev/null || failure "$Data"
-cd /opt/Yearning/src &> /dev/null
+cd /opt && rm -fr ops_inception_back &> /dev/null && mv ops_inception ops_inception_back &> /dev/null
+git clone git@git.gungunqian.cn:qiangungun/ops_inception.git &>/dev/null || failure "$Data"
+cd /opt/ops_inception/src &> /dev/null
 pip3 install -r requirements.txt &>/dev/null && success "$Data" || failure "$Data" 
 
 # 06
-Data="06) Copy Yearning File, Please wait..."
+Data="06) Copy ops_inception File, Please wait..."
 echo -n $Data
 ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
 rm -fr /usr/share/nginx/html/* &> /dev/null
-yes | cp -fnr /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ &> /dev/null 
-yes | cp -fnr /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ &> /dev/null
-yes | cp -fnr /opt/Yearning/webpage/dist/* /usr/share/nginx/html/ &>/dev/null && success "$Data" || failure "$Data"
+yes | cp -fnr /opt/ops_inception/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ &> /dev/null 
+yes | cp -fnr /opt/ops_inception/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ &> /dev/null
+yes | cp -fnr /opt/ops_inception/webpage/dist/* /usr/share/nginx/html/ &>/dev/null && success "$Data" || failure "$Data"
 
 # 07
 Data="07) Start Nginx, Please wait..."
@@ -180,9 +175,9 @@ fi
 
 mysql -uroot -e "grant all on *.* to root@localhost identified by '${MYSQLPASSWORD}'; flush privileges;" &> /dev/null
 if [ $? = 0 ];then
-  mysql -uroot -p"$MYSQLPASSWORD" -e "create database if not exists Yearning charset utf8;" &> /dev/null
+  mysql -uroot -p"$MYSQLPASSWORD" -e "create database if not exists ops_inception charset utf8;" &> /dev/null
 else
-  mysql -uroot -p"$MYSQLPASSWORD" -e "create database if not exists Yearning charset utf8;" &> /dev/null
+  mysql -uroot -p"$MYSQLPASSWORD" -e "create database if not exists ops_inception charset utf8;" &> /dev/null
 fi
 
 # 10
@@ -200,31 +195,32 @@ else
   read -p "10) Input Localhost IP Address[Default: $ADDRESS]: " ADDRESS 
   ADDRESS=`netstat -anplt | grep "sshd" | grep ESTABLISHED | awk '{print $4}' | awk -F':' '{print $1}' | head -n1`
 fi
-cd /opt/Yearning/src && sed -i "s/backuppassword =.*/backuppassword = $MYSQLPASSWORD/" deploy.conf &> /dev/null
-cd /opt/Yearning/src && sed -i "s/ipaddress = .*/ipaddress = ${ADDRESS}:8000/" deploy.conf &> /dev/null
-cd /opt/Yearning/src && sed -i "s/password =.*/password = $MYSQLPASSWORD/" deploy.conf &> /dev/null 
+cd /opt/ops_inception/src && sed -i "s/backuppassword =.*/backuppassword = $MYSQLPASSWORD/" deploy.conf &> /dev/null
+cd /opt/ops_inception/src && sed -i "s/ipaddress = .*/ipaddress = ${ADDRESS}:8000/" deploy.conf &> /dev/null
+cd /opt/ops_inception/src && sed -i "s/password =.*/password = $MYSQLPASSWORD/" deploy.conf &> /dev/null 
 
 # 11
-Data="11) Migrate Yearning Tables, Please wait..."
+Data="11) Migrate ops_inception Tables, Please wait..."
 echo -n $Data
-cd /opt/Yearning/src
+cd /opt/ops_inception/src
 python3 manage.py makemigrations &> /dev/null && python3 manage.py migrate &> /dev/null && success "$Data" || failure "$Data"
 
 # 12
-read -p "12) Set Yearning admin User Passwrod: " PASSWORD
+read -p "12) Set ops_inception admin User Passwrod: " PASSWORD
 if [ -z $PASSWORD ];then
    echo -e "Input cannot empty, please enter again"
-   read -p "Set Yearning admin User Passwrod: " PASSWORD
+   read -p "Set ops_inception admin User Passwrod: " PASSWORD
 fi
 echo "from core.models import Account; Account.objects.create_user(username='admin', password="$PASSWORD", group='admin',is_staff=1)" | python3 manage.py shell &> /dev/null
-echo "from core.models import grained;grained.objects.get_or_create(username='admin', permissions={'ddl': '1', 'ddlcon': [], 'dml': '1', 'dmlcon': [], 'dic': '1', 'diccon': [], 'dicedit': '0', 'query': '1', 'querycon': [], 'user': '1', 'base': '1', 'dicexport': '0'})" | python3 manage.py shell &> /dev/null
+echo "from core.models import grained;grained.objects.get_or_create(username='admin', permissions={'mysqlorderlist': '1',
+        'mydailyorder': '1', 'git'：'1', 'ddl': '1', 'ddlcon': [], 'dml': '1', 'dmlcon': [], 'dic': '1', 'diccon': [], 'dicedit': '0', 'query': '1', 'querycon': [], 'user': '1', 'base': '1', 'dicexport': '0'})" | python3 manage.py shell &> /dev/null
 
 # 13
 Data="13) Start Inception, Please wait..."
 echo -n $Data
-cd /opt/Yearning/install/ && tar xvf inception.tar &> /dev/null
+cd /opt/ops_inception/install/ && tar xvf inception.tar &> /dev/null
 ps aux | grep Inception | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
-/opt/Yearning/install/inception/bin/Inception --defaults-file=/opt/Yearning/install/inception/bin/inc.cnf &> /dev/null & 
+/opt/ops_inception/install/inception/bin/Inception --defaults-file=/opt/ops_inception/install/inception/bin/inc.cnf &> /dev/null & 
 if [ $? = 0 ];then
   success "$Data" 
 else
@@ -232,9 +228,9 @@ else
 fi
 
 # 14
-Data="14) Start Yearning, Please wait..."
+Data="14) Start ops_inception, Please wait..."
 echo -n $Data
-cd /opt/Yearning/src
+cd /opt/ops_inception/src
 ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
 python3 manage.py runserver 0.0.0.0:8000 &> /dev/null &
 if [ $? = 0 ];then
@@ -264,7 +260,7 @@ restart() {
   Data="03) Restart Inception"
   echo -n $Data
   ps aux | grep Inception | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
-  /opt/Yearning/install/inception/bin/Inception --defaults-file=/opt/Yearning/install/inception/bin/inc.cnf &> /dev/null & 
+  /opt/ops_inception/install/inception/bin/Inception --defaults-file=/opt/ops_inception/install/inception/bin/inc.cnf &> /dev/null & 
   if [ $? = 0 ];then
     success "$Data" 
   else
@@ -272,9 +268,9 @@ restart() {
   fi
   sleep 1
   
-  Data="04) Restart Yearning"
+  Data="04) Restart ops_inception"
   echo -n $Data
-  cd /opt/Yearning/src
+  cd /opt/ops_inception/src
   ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
   python3 manage.py runserver 0.0.0.0:8000 &> /dev/null &
   if [ $? = 0 ];then
@@ -312,9 +308,9 @@ stop() {
   fi
   sleep 1
   
-  Data="04) Stop Yearning"
+  Data="04) Stop ops_inception"
   echo -n $Data
-  cd /opt/Yearning/src
+  cd /opt/ops_inception/src
   ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
   if [ $? = 0 ];then
     success "$Data" 
@@ -331,9 +327,9 @@ Nginx conf     |   /etc/nginx/nginx.conf                       |
 Nginx data     |   /usr/share/nginx/html/*                     |
 MySQL conf     |   /etc/my.cnf                                 |
 MySQL data     |   /var/lib/mysql/*                            |
-Inception conf |   /opt/Yearning/install/inception/bin/inc.cnf |
-Yearning conf  |   /opt/Yearning/src/deploy.conf               |
-Yearning log   |   /opt/Yearning/src/log/*                     |
+Inception conf |   /opt/ops_inception/install/inception/bin/inc.cnf |
+ops_inception conf  |   /opt/ops_inception/src/deploy.conf               |
+ops_inception log   |   /opt/ops_inception/src/log/*                     |
 ----------------------------------------------------------------
 END
 }
