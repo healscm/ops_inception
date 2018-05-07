@@ -25,43 +25,34 @@ class send_email(object):
             text = '<html><body><h1>数据库 工单执行通知</h1>' \
                    '<br><p>工单号: %s</p>' \
                    '<br><p>发起人: %s</p>' \
-                   '<br><p>地址: <a href="%s">%s</a></p>' \
                    '<br><p>工单备注: %s</p>' \
                    '<br><p>状态: 已执行</p>' \
                    '<br><p>备注: %s</p>' \
                    '</body></html>' %(
                 mail_data['workid'],
                 mail_data['to_user'],
-                mail_data['addr'],
-                mail_data['addr'],
                 mail_data['text'],
                 mail_data['note'])
         elif type == 1: #驳回
             text = '<html><body><h1>数据库 工单驳回通知</h1>' \
                    '<br><p>工单号: %s</p>' \
                    '<br><p>发起人: %s</p>' \
-                   '<br><p>地址: <a href="%s">%s</a></p>' \
                    '<br><p>状态: 驳回</p>' \
                    '<br><p>驳回说明: %s</p>' \
                    '</body></html>' % (
                        mail_data['workid'],
                        mail_data['to_user'],
-                       mail_data['addr'],
-                       mail_data['addr'],
                        mail_data['rejected'])
         else: #提交
-            text = '<html><body><h1>Yearning 工单提交通知</h1>' \
+            text = '<html><body><h1>sql工单提交通知</h1>' \
                    '<br><p>工单号: %s</p>' \
                    '<br><p>发起人: %s</p>' \
-                   '<br><p>地址: <a href="%s">%s</a></p>' \
                    '<br><p>工单备注: %s</p>' \
                    '<br><p>状态: 已提交</p>' \
                    '<br><p>备注: %s</p>' \
                    '</body></html>' % (
                        mail_data['workid'],
                        mail_data['to_user'],
-                       mail_data['addr'],
-                       mail_data['addr'],
                        mail_data['text'],
                        mail_data['note'])
         msg = MIMEText(text, 'html', 'utf-8')
