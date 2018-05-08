@@ -39,6 +39,14 @@
   </Dropdown>
   <Dropdown placement="right-start" @on-click="changeMenu">
     <Button @click="changeMenu('login')" style="width: 70px;margin-left: -5px;padding:10px 0;" type="text">
+      <Icon type="person" size="20" :color="iconColor"></Icon>
+    </Button>
+    <DropdownMenu slot="list">
+      <DropdownItem name="sqlruletext" key="login">数据库规范</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown placement="right-start" @on-click="changeMenu">
+    <Button @click="changeMenu('login')" style="width: 70px;margin-left: -5px;padding:10px 0;" type="text">
           <Icon type="log-out" size="20" :color="iconColor"></Icon>
     </Button>
     <DropdownMenu slot="list">

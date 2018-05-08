@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)file:///C:/Users/%E6%9C%B1%E7%BF%8C%E5%BF%97/AppData/Local/Temp/MarkdownPadPreview.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>钱滚滚数据库规范</title>
+
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<!--<base href="file:\\\C:\Users\朱翌志\Documents\WeChat Files\do0it0right0now\Files\">--><base href=".">
+</head>
+<body>
+<h1>钱滚滚数据库规范V1.1</h1>
+<h2>1. 目的</h2>
+<ul>
+<li>进一步规范SQL执行的标准，降低手工操作带来的潜在风险</li>
+</ul>
+<h2>2. 原则</h2>
+<ul>
+<li>不能在程序中直接执行未预期、未审核的的SQL语句；</li>
+<li>不能直接用SQL替代执行程序不支持的功能；</li>
+<li>对于非常特殊的需求，走审批流程；</li>
+</ul>
+<h2>3. sql分类</h2>
+<ul>
+<li>
+3.1 版本发布类：
+<ul>
+<li>定期发布：每周三、周四16:00之后；</li>
+<li>hotfix：每天12:30-13:00；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+3.2 数据初始化、历史数据清理：
+<ul>
+<li>属于一次性需求的，可允许手工执行sql；</li>
+<li>数据迁移走常规数据归档流程；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+3.3 运营功能：
+<ul>
+<li>修改短信文案，定时任务开关等直接与DBA沟通执行；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+3.4 BUG修复：
+<ul>
+<li>修复线上问题，开发提供优化方案及上线时间；</li>
+</ul>
+</li>
+</ul>
+<h2>4.数据订正风险</h2>
+<ul>
+<li>
+业务风险：
+<ul>
+<li>订正本身所包含的业务不正确，导致给客户给公司带来损失；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+程序风险：
+<ul>
+<li>订正本身业务正确，但是应用程序无法兼容订正的数据，导致应用出错；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+数据库风险：
+<ul>
+<li>订正本身业务正确，应用程序也可以兼容，但是订正速度过快、订正并发压力过大，导致数据库无法正常提供服务；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+沟通风险：
+<ul>
+<li>在业务方-开发接口人-DBA三方的沟通交流过程中，信息传递错误或者不及时，导致最终订正的数据没有达到预期的目的；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+回滚风险：
+<ul>
+<li>主要是因为业务方的原因，订正完成一段时间后要求回退，若在订正前没有备份原始数据，则可能导致无法顺利回退或者回退难度极大，给客户给公司带来损失；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+同步风险：
+<ul>
+<li>各类同步架构下，数据订正可能导致同步堆积和同步延时，影响正常同步业务，所以有些大规模订正必须要正确屏蔽同步，并在多个库分别执行相同的订正脚本；</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+缓存：
+<ul>
+<li>有些表在应用层面做了缓存，制定订正计划的时候要考虑到订正后是否需要更新缓存；</li>
+</ul>
+</li>
+</ul>
+<h2>5. 行为规范</h2>
+<ul>
+<li>
+<p>禁止在生产主库上进行后台管理和统计类的功能查询，这类复杂sql会导致CPU的升高，从而影响到线上业务。</p>
+</li>
+<li>
+<p>批量数据清理、迁移，需要开发和DBA共同审查，避免该类操作在业务高峰期进行，而且在执行过程中需要观察服务状态。</p>
+</li>
+<li>
+<p>促销活动和会引起大流量的事件都需要提前和DBA沟通，做好评估，比如提前几天增加机器内存或扩展架构，以防数据库出现性能瓶颈。</p>
+</li>
+<li>
+<p>禁止在线上做压力测试。</p>
+</li>
+<li>
+<p>禁止一个mysql实例存放多个业务数据库，这样会造成业务耦合度过高，一旦出现问题，所有业务都会搜到影响，而且增加了定位故障问题的难度。在条件允许的情况下，实现一个实例一个业务库或少量业务库。</p>
+</li>
+</ul>
+<h2>6. 基本规范</h2>
+<h3>6.1 使用innodb引擎</h3>
+<ul>
+<li>支持事务，行级锁，更好的恢复性，高并发下性能更好。</li>
+<li>InnoDB表避免使用COUNT(*)操作，因内部没有计数器，需要一行一行累加计算，计数统计实时要求较强可以使用Redis。</li>
+</ul>
+<h3>6.2 字符集统一使用UTF8</h3>
+<ul>
+<li>不会产生乱码的风险。</li>
+<li>若有emoji表情需求，可以使用utf8mb4</li>
+</ul>
+<h3>6.3 所有表和字段都需要有中文注释</h3>
+<ul>
+<li>方便你我他！</li>
+</ul>
+<h3>6.4 不在mysql数据库中存储文件、图片等</h3>
+<ul>
+<li>文件、图片更适合于GFS分布式文件系统，数据库里存放超链接即可。</li>
+</ul>
+<h3>6.5 不使用存储过程、触发器、视图、事件</h3>
+<ul>
+<li>mysql是OLTP（联机事务处理）应用，其擅长领域是增删查改，对于逻辑计算相关的应用不是很合适，这部分最好通过程序去实现。</li>
+</ul>
+<h3>6.6 不使用外键</h3>
+<ul>
+<li>外键和导致父表与子表间的耦合，非常影响sql性能，容易出现锁等待及死锁。</li>
+</ul>
+<h1>7. 库表设计规范</h1>
+<h3>7.1 表必须有主键</h3>
+<ul>
+<li>这样可以保证数据行是按照顺序写入，对于SAS传统机械式硬盘写入性能更好，根据主键做关联查询的性能也会更好，抽取数据也更为方便。</li>
+</ul>
+<h3>7.2 单表字段不超过20~30个</h3>
+<ul>
+<li>字段过多的宽表会严重影响性能。</li>
+</ul>
+<h3>7.3 建表时加上特殊字段</h3>
+<ul>
+<li>
+create_time（创建时间）:
+<ul>
+<li>TIMESTAMP DEFAULT CURRENT_TIMESTAMP</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+update_time（修改时间）:
+<ul>
+<li>TIMESTAMP DEFAULT CURRENT<em>TIMESTAMP ON UPDATE CURRENT</em>TIMESTAMP</li>
+</ul>
+</li>
+</ul>
+<p></p><p></p>
+<ul>
+<li>
+host（主机IP）:
+<ul>
+<li>INT UNSIGNED</li>
+</ul>
+</li>
+</ul>
+<h3>7.4 单表数据量控制在3000万以内</h3>
+<ul>
+<li>数据量过大，会加长日常检索、变更的操作时间。超过3000万行数据的表可以进行归档操作。</li>
+</ul>
+<h3>7.5 禁止使用分区表</h3>
+<ul>
+<li>分区表的好处，通过后端DB的设置，比如对于时间字段做拆分，就可以轻松实现表的拆分。但是每次查询的字段必须是分区键，不然会遍历所有分区。而且分区表在物理结构上还是一张表，当需要更改表结构时，没有任何性能上的提升；</li>
+<li>若发生性能瓶颈及业务需要的情况，可以考虑使用中间件去实现分表功能。</li>
+</ul>
+<h1>8. 字段设计规范</h1>
+<h3>8.1 DECIMAL代替FLOAT和DOUBLE存储精确浮点数</h3>
+<ul>
+<li>
+<p>浮点数的缺点是会引起精度问题：</p>
+<pre><code>mysql&gt; CREATE TABLE t3 (c1 float(10,2),c2 decimal(10,2));       
+Query OK, 0 rows affected (0.05 sec)
+&gt;mysql&gt; insert into t3 values (999998.02, 999998.02);    
+Query OK, 1 row affected (0.01 sec)
+&gt;mysql&gt; select * from t3;
++-----------+-----------+
+| c1        | c2        |
++-----------+-----------+
+| 999998.00 | 999998.02 |
++-----------+-----------+
+1 row in set (0.00 sec)
+</code></pre>
+
+</li>
+</ul>
+<h3>8.2 使用TINYINT来代替ENUM类型</h3>
+<ul>
+<li>采用enum枚举类型，会存在扩展的问题，增加新的ENUM值时，等于要做DDL修改表结构操作。</li>
+</ul>
+<h3>8.3 字段类型尽量按照实际情况分配</h3>
+<ul>
+<li>
+<p>比如主键最好使用int整形，不用uuid，当定位一条记录时，4字节会比32字节快得多。涉及几个表做join时，效果就更明显了。更小的字段类型占用的内存就更少，占用的磁盘空间和磁盘I/O也会更少，而且还会占用更少的带宽。</p>
+<p>有不少开发人员在设计表字段时，只要是针对数值类型的全部用int，但这不一定合适，就比如用户的年龄，一般来说，年龄大都在1~100岁之间，长度只有3，那么用int就不适合了，可以用tinyint代替。又比如用户在线状态，0表示离线、1表示在线、2表示离开、3表示忙碌、4表示隐身等，其实类似这样的情况，用int都是没有必要的，浪费空间，采用tinyint完全可以满足需要，int占用的是4字节，而tinyint才占用1个字节。</p>
+<p>int整型有符号（signed）最大值是2147483647，而无符号（unsigned）最大值是4294967295，如果你的需求没有存储负数，那么建议改成有符号（unsigned），可以增加int存储范围。</p>
+</li>
+</ul>
+<h3>8.4 字段长度</h3>
+<ul>
+<li>
+<p>尽量用varchar替换char，在innodb中可变长度的varchar比char更有效率；</p>
+</li>
+<li>
+<p>varchar最大长度是有限制的（最大为65533），比如单表其他字段、varchar本身的字符类型都会影响到该值；</p>
+</li>
+<li>
+<p>varchar的计算：</p>
+<pre><code>create table t4(c int, c2 char(30), c3 varchar(N)) charset=utf8;
+则此处N的最大值为 (65535-1-2-4-30*3)/3=21812
+减4的原因是int类型的c占4个字节;
+减30*3的原因是char(30)占用90个字节，编码是utf8
+</code></pre>
+
+</li>
+</ul>
+<h3>8.5 尽量不使用TEXT,BLOB类型</h3>
+<ul>
+<li>这些类型会增加存储空间的占用，而且读取速度很慢。</li>
+</ul>
+<h3>8.6 字段定义为NOT NULL，并要提供默认值</h3>
+<ul>
+<li>
+<p>NULL值很难进行查询优化，它会使索引统计更加复杂，还需要MySQL内部进行特殊处理。</p>
+</li>
+<li>
+<p>NULL的取值：	</p>
+<pre><code>group_name字段为defalut_null,也已经存了很多null值，现要取出groupname不等于299的所有值：
+
+select * from product.pcs_product where group_name !='299';
+
+应改为：
+
+select * from product.pcs_product where group_name !='299' or group_name is null;
+</code></pre>
+
+</li>
+</ul>
+<h3>8.7 字段命名规范</h3>
+<ul>
+<li>
+<p>字段名小于20个字符</p>
+</li>
+<li>
+<p>字段名全小写 </p>
+</li>
+<li>
+<p>下划线表示 </p>
+<pre><code>错误示例：
+CREATE TABLE `bcdc_sign_user_card_relation_ccb_null` (  *表名过长，可以压缩*
+`id` bigint(20) NOT NULL AUTO_INCREMENT,
+`sign_id` varchar(64) NOT NULL,
+ `cust_Id` varchar(32) NOT NULL,                        *统一小写cust_id*
+ `status` varchar(2) NOT NULL,                          *状态可以用tinyint*
+ `note` varchar(100) DEFAULT NULL,                      *不能默认定义为NULL*
+ `createtime` datetime DEFAULT NULL,                    *下划线分割create_time*                   
+ `modifiedtime` datetime DEFAULT NULL,                  
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;  *缺少comment*
+</code></pre>
+
+</li>
+</ul>
+<h1>9. 索引规范</h1>
+<h3>9.1 查询字段必须建立索引</h3>
+<ul>
+<li>select、update、delete语句的where条件列；</li>
+<li>多表join的字段。</li>
+</ul>
+<h3>9.2 索命命名</h3>
+<ul>
+<li>'idx_'开头</li>
+<li>小写字母</li>
+<li>
+<p>下划线分割</p>
+<pre><code>范例：
+alter table guifan add index idx_create_time(create_time);
+</code></pre>
+
+</li>
+</ul>
+<h3>9.3 索引不是越多越好，按实际情况建立索引</h3>
+<ul>
+<li>索引是一把双刃剑，它可以提高查询效率但也会降低插入和更新的速度并占用磁盘空间。适当的索引对应用的性能至关重要，而且在MySQL中使用索引它的速度是极快的。遗憾的是，索引也有相关的开销。每次向表中写入时（如INSERT、UPDATEH或DELETE），如果带有一个或多个索引，那么MySQL也要更新各个索引，这样索引就增加了对各个表的写入操作的开销。只有当某列被用于WHERE子句时，才能享受到索引的性能提升的好处。如果不使用索引，它就没有价值，而且会带来维护上的开销。</li>
+</ul>
+<h3>9.4 不在索引列进行数学运算和函数运算</h3>
+<ul>
+<li>
+<p>这样操作会导致全表扫描。</p>
+<pre><code>select * from guifan where year(create_date)=2018;
+即使create_date有索引，但也会进行全表扫描
+应该为：
+select * from guifan where create_date='2018-02-28 13:30:35';
+</code></pre>
+
+</li>
+</ul>
+<h3>9.5 不在低基数列上建索引，例如“性别”</h3>
+<ul>
+<li>有时候，进行全表浏览要比必须读取索引和数据表更快，尤其是当索引包含的是平均分布的数据集是更是如此。可根据列的离散度确认是否需要建立索引。</li>
+</ul>
+<h3>9.6 不使用%前导查询，如like ‘%XXX’</h3>
+<ul>
+<li>
+<p>无法使用索引，会全表扫描。</p>
+<pre><code>低效查询：
+select * from guifan where name like '%a';
+高效查询：
+select * from guifan where name like 'a%';
+</code></pre>
+
+</li>
+</ul>
+<h3>9.7 不使用反向查询，如not in / not like</h3>
+<ul>
+<li>
+<p>无法使用索引，导致全表扫描。</p>
+</li>
+<li>
+<p>可以用not exists代替：</p>
+<pre><code>有表A（小表）,表B（大表）
+
+select * from A where cc in (select cc from B) 效率低，用到了A表上cc列的索引；
+select * from A where exists(select cc from B where cc=A.cc) 效率高，用到了B表上cc列的索引；
+
+select * from B where cc in (select cc from A) 效率高，用到了B表上cc列的索引；
+select * from B where exists(select cc from A where cc=B.cc) 效率低，用到了A表上cc列的索引
+
+not in 和not exists：
+如果查询语句使用了not in，那么内外表都进行全表扫描，没有用到索引；
+而not extists的子查询依然能用到表上的索引。所以无论哪个表大，用not exists都比not in要快。
+</code></pre>
+
+</li>
+</ul>
+<h3>9.8 避免冗余和重复索引</h3>
+<ul>
+<li>例如联合索引idx<em>a</em>b_c(a,b,c)相当于(a)、(a,b)、(a,b,c),那么索引(a),(a,b)就是多余的。</li>
+</ul>
+<h3>9.9 撰写语句时，多使用explain进行自检</h3>
+<ul>
+<li>观察sql的执行计划，是否使用到索引等。</li>
+</ul>
+<h1>10. SQL设计规范</h1>
+<h3>10.1 select语句</h3>
+<ul>
+<li>select语句必须指定具体字段名字，禁止使用<code>*</code>，数据取多了会额外消耗CPU、IO和网络带宽；</li>
+<li>select语句尽量不使用union，推荐使用union all，并且子句个数控制在3个以内；</li>
+</ul>
+<h3>10.2 DML语句</h3>
+<ul>
+<li>insert语句必须指定具体的字段名称，不要写成insert values（…………）;</li>
+<li>禁止使用force index、ignoreindex、straight join；</li>
+<li>select/update/delete语句中的检索条件必须命中索引；</li>
+<li>select/update/delete语句中不允许使用%S%或%S进行模糊查询；</li>
+<li>order by子句中的字段必须命中索引；</li>
+</ul>
+<h3>10.3 用in来替换or</h3>
+<ul>
+<li>
+<p>合理的使用in值会比or来的更高效。</p>
+<pre><code>低效查询：
+select * from guifan where name='aaa' or name='bbb' or name='ccc';
+高效查询：
+select * from guifan where name in (aaa,bbb,ccc);   
+</code></pre>
+
+</li>
+</ul>
+<h3>10.4 减少与数据库的交互次数</h3>
+<ul>
+<li>
+<p>尽量将语句合并。</p>
+<pre><code>低效sql：
+insert into guifan (name) values ('aaa');
+insert into guifan (name) values ('bbb');
+insert into guifan (name) values ('ccc');
+高效sql：
+insert into guifan (name) values ('aaa'),('bbb'),('ccc');
+
+update ... where id in (1,2,3);
+
+alter table guifan add column col1,add column col2;
+</code></pre>
+
+</li>
+</ul>
+<h3>10.5 事务</h3>
+<ul>
+<li>事务中INSERT/UPDATE/DELETE语句操作的行数控制在500，以及where子句中in列表的传参个数控制在500；</li>
+<li>可以将大事物拆成多个小事物，分批多操作。在主从的架构中，一个过大的事物会导致从库延迟；</li>
+<li>批量操作数据时，需要控制事务处理间隔时间，进行必要的sleep；、</li>
+<li></li>
+</ul>
+<h3>10.6 数据分批获取</h3>
+<ul>
+<li>每次获取数据小于1000条，结果集小于1M。</li>
+</ul>
+<h3>10.7 异常处理</h3>
+<ul>
+<li>程序应有捕获SQL异常的处理机制，必要时通过rollback显式回滚。</li>
+</ul>
+<h2>11. sql提交时的注意事项</h2>
+<h3>11.1 脚本加上commit命令</h3>
+<ul>
+<li>当前数据库未开启auto-commit功能，非隐式提交的语句都需要执行commit才能提交。需要运维执行的sql脚本里，必须加上commit。</li>
+</ul>
+<h3>11.2 注意语句的拆分</h3>
+<ul>
+<li>连续500条sql必须commit提交一次。</li>
+</ul>
+<h3>11.3 大表DDL</h3>
+<ul>
+<li>大表DDL耗时长，也会对生产环境造成影响，如果行数超过500百万的表要进行DDL操作，必须提前与DBA沟通，能提前上线的尽量提前上线。</li>
+</ul>
+<h3>11.4 sql的自检</h3>
+<ul>
+<li>提交的sql脚本必须自己检测过，以免在生产数据库执行了错误的语句。</li>
+</ul>
+<h3>11.5 重要数据回滚</h3>
+<ul>
+<li>若要变更很重要的数据或删除业务数据，需要想好该部分数据是否需要备份。无备份直接执行，再需要找回数据的话，操作非常繁琐，而且可能遗失部分数据。</li>
+</ul>
+
+
+
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
+</body></html>

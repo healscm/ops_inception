@@ -22,26 +22,26 @@
   <Icon type="home" :size="iconSize"></Icon>
   <span class="layout-text">首页</span>
   </MenuItem>
-  <!--<MenuItem name="myorder">-->
-    <!--<Icon type="person" :size="iconSize"></Icon>-->
-    <!--<span class="layout-text">我的cc工单</span>-->
-  <!--</MenuItem>-->
   <template v-for="item in menuList">
       <Submenu v-if="item.children.length>=1 && item.name !== 'main'" :name="item.name" :key="item.path">
         <template slot="title">
           <Icon :type="item.icon" :size="iconSize"></Icon>
           <span class="layout-text">{{ item.title }}</span>
         </template>
-  <template v-for="child in item.children">
-    <template v-if="filtermenulist[child.name] === '1'">
-          <MenuItem :name="child.name" :key="child.name" style="margin-left: -5%">
-            <Icon :type="child.icon" :size="iconSize" :key="child.name"></Icon>
-            <span class="layout-text" :key="child.name + 1">{{ child.title }}</span>
-          </MenuItem>
-    </template>
-        </template>
-  </Submenu>
+      <template v-for="child in item.children">
+          <template v-if="filtermenulist[child.name] === '1'">
+                <MenuItem :name="child.name" :key="child.name" style="margin-left: -5%">
+                  <Icon :type="child.icon" :size="iconSize" :key="child.name"></Icon>
+                  <span class="layout-text" :key="child.name + 1">{{ child.title }}</span>
+                </MenuItem>
+          </template>
+      </template>
+      </Submenu>
   </template>
+  <Menu-item name="sqlruletext">
+    <Icon type="person" :size="iconSize"></Icon>
+    <span class="layout-text">数据库规范</span>
+  </Menu-item>
   <Menu-item name="login">
     <Icon type="log-out" :size="iconSize"></Icon>
     <span class="layout-text">退出</span>

@@ -81,9 +81,18 @@ export const appRouter = [
         component: resolve => {
           require(['./components/Myself/message.vue'], resolve);
         }
+      },
+      {
+        path: '/sqlruletext',
+        name: 'sqlruletext',
+        title: '数据库规范',
+        component: resolve => {
+          require(['./components/textfile/sqlruletext.vue'], resolve)
+        }
       }
     ]
   },
+
 {
     path: '/myorder',
     icon: 'edit',
