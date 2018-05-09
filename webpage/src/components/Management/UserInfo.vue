@@ -91,7 +91,7 @@
       </FormItem>
       <template>
         <FormItem label="日常工单提交:">
-          <RadioGroup v-model="permission.git">
+          <RadioGroup v-model="permission.other">
             <Radio label="1">是</Radio>
             <Radio label="0">否</Radio>
           </RadioGroup>
@@ -99,20 +99,20 @@
       </template>
       <template>
         <FormItem label="日常工单详情:">
-          <RadioGroup v-model="permission.dailytail">
+          <RadioGroup v-model="permission.dailytask">
             <Radio label="1">是</Radio>
             <Radio label="0">否</Radio>
           </RadioGroup>
         </FormItem>
         <FormItem label="数据库工单详情:">
-          <RadioGroup v-model="permission.dailytask">
+          <RadioGroup v-model="permission.dailytail">
             <Radio label="1">是</Radio>
             <Radio label="0">否</Radio>
           </RadioGroup>
         </FormItem>
       </template>
       <template>
-        <FormItem label="DDL及索引权限:">
+        <FormItem label="DDL权限:">
           <RadioGroup v-model="permission.ddl">
             <Radio label="1">是</Radio>
             <Radio label="0">否</Radio>
@@ -165,39 +165,39 @@
             <Checkbox  v-for="i in connectionList.person" :label="i.username" :key="i.username">{{i.username}}</Checkbox>
           </CheckboxGroup>
         </FormItem>
-        <hr style="height:1px;border:none;border-top:1px dashed #dddee1;" />
-        <br>
-      <FormItem label="数据字典权限:">
-        <RadioGroup v-model="permission.dic">
-          <Radio label="1">是</Radio>
-          <Radio label="0">否</Radio>
-        </RadioGroup>
-      </FormItem>
-      <template v-if="permission.dic === '1'">
-        <FormItem label="数据字典修改权限:">
-          <RadioGroup v-model="permission.dicedit">
-            <Radio label="1">是</Radio>
-            <Radio label="0">否</Radio>
-          </RadioGroup>
-        </FormItem>
-        <FormItem label="数据字典导出权限:">
-          <RadioGroup v-model="permission.dicexport">
-            <Radio label="1">是</Radio>
-            <Radio label="0">否</Radio>
-          </RadioGroup>
-        </FormItem>
-        <FormItem label="连接名:">
-          <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
-            <Checkbox
-              :indeterminate="indeterminate.dic"
-              :value="checkAll.dic"
-              @click.prevent.native="ddlCheckAll('diccon', 'dic', 'dic')">全选</Checkbox>
-          </div>
-          <CheckboxGroup v-model="permission.diccon">
-            <Checkbox  v-for="i in connectionList.dic" :label="i.Name" :key="i.Name">{{i.Name}}</Checkbox>
-          </CheckboxGroup>
-        </FormItem>
-      </template>
+        <!--<hr style="height:1px;border:none;border-top:1px dashed #dddee1;" />-->
+        <!--<br>-->
+      <!--<FormItem label="数据字典权限:">-->
+        <!--<RadioGroup v-model="permission.dic">-->
+          <!--<Radio label="1">是</Radio>-->
+          <!--<Radio label="0">否</Radio>-->
+        <!--</RadioGroup>-->
+      <!--</FormItem>-->
+      <!--<template v-if="permission.dic === '1'">-->
+        <!--<FormItem label="数据字典修改权限:">-->
+          <!--<RadioGroup v-model="permission.dicedit">-->
+            <!--<Radio label="1">是</Radio>-->
+            <!--<Radio label="0">否</Radio>-->
+          <!--</RadioGroup>-->
+        <!--</FormItem>-->
+        <!--<FormItem label="数据字典导出权限:">-->
+          <!--<RadioGroup v-model="permission.dicexport">-->
+            <!--<Radio label="1">是</Radio>-->
+            <!--<Radio label="0">否</Radio>-->
+          <!--</RadioGroup>-->
+        <!--</FormItem>-->
+        <!--<FormItem label="连接名:">-->
+          <!--<div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">-->
+            <!--<Checkbox-->
+              <!--:indeterminate="indeterminate.dic"-->
+              <!--:value="checkAll.dic"-->
+              <!--@click.prevent.native="ddlCheckAll('diccon', 'dic', 'dic')">全选</Checkbox>-->
+          <!--</div>-->
+          <!--<CheckboxGroup v-model="permission.diccon">-->
+            <!--<Checkbox  v-for="i in connectionList.dic" :label="i.Name" :key="i.Name">{{i.Name}}</Checkbox>-->
+          <!--</CheckboxGroup>-->
+        <!--</FormItem>-->
+      <!--</template>-->
         <hr style="height:1px;border:none;border-top:1px dashed #dddee1;" />
         <br>
       <FormItem label="数据查询权限:">
@@ -298,6 +298,7 @@ export default {
     return {
       percent: 0,
       permission: {
+        other: '0',
         dailytail: '0',
         dailytask: '0',
         ddl: '0',

@@ -172,6 +172,33 @@ export const appRouter = [
     ]
   },
   {
+    path: '/view',
+    icon: 'search',
+    name: 'view',
+    title: '查询',
+    component: Index,
+    children: [
+      // {
+      //   path: 'view-dml',
+      //   name: 'view-dml',
+      //   title: '数据库字典',
+      //   'icon': 'ios-book',
+      //   component: resolve => {
+      //     require(['./components/Search/DataBaseDic.vue'], resolve)
+      //   }
+      // },
+      {
+        path: 'serach-sql',
+        name: 'serach-sql',
+        title: 'SQL查询',
+        'icon': 'qr-scanner',
+        component: resolve => {
+          require(['./components/Search/SearchSQL.vue'], resolve)
+        }
+      }
+    ]
+  },
+  {
     path: '/management',
     icon: 'social-buffer',
     name: 'management',

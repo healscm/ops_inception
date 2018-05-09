@@ -61,7 +61,6 @@ export default {
   data () {
     return {
       filtermenulist: {
-        'git': '',
         'mysqlorderlist': '',
         'mydailyorder': '',
         'ddledit': '',
@@ -110,7 +109,7 @@ export default {
         this.filtermenulist.ddledit = c.ddl
         this.filtermenulist.dmledit = c.dml
         this.filtermenulist.gitbranch = c.base
-        this.filtermenulist.other = c.git
+        this.filtermenulist.other = c.other
         this.filtermenulist['view-dml'] = c.dic
         this.filtermenulist['serach-sql'] = c.query
         this.filtermenulist['management-user'] = c.user

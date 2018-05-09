@@ -76,7 +76,7 @@ export default {
       currentPageName: this.$route.name,
       openedSubmenuArr: this.$store.state.openedSubmenuArr,
       filtermenulist: {
-        'git': '1',
+        'other': '1',
         'mysqlorderlist': '1',
         'mydailyorder': '1',
         'ddledit': '',
@@ -112,7 +112,7 @@ export default {
         let c = JSON.parse(res.data)
         this.filtermenulist.mydailyorder = c.dailytask
         this.filtermenulist.mysqlorderlist = c.dailytail
-        this.filtermenulist.other = c.git
+        this.filtermenulist.other = c.other
         this.filtermenulist.orderlist = c.base
         this.filtermenulist.ddledit = c.ddl
         this.filtermenulist.dmledit = c.dml
@@ -124,3 +124,4 @@ export default {
   }
 };
 </script>
+C:\code\webinception\ops_inception\webpage\src\main_components\sidebarMenuShrink.vue
