@@ -31,7 +31,9 @@
             <a href="qggsqlrule.html"> 数据库规范</a>
           <div v-html="urlsql"></div>
           <!--<sqltext></sqltext>-->
-          </p>
+          <a >
+          <img class="unlock-avator-img" style="height: 600px; width: auto;" src="../../../static/inception_api.png">
+          </a>
           <!--<div class="data-sourcefunc-row">-->
             <!--<div class="fuc">-->
               <!--<H3>使用规则:</H3>-->
