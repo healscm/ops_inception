@@ -1,6 +1,6 @@
 FROM centos
 
-MAINTAINER qiangungun
+MAINTAINER healscm
 
 EXPOSE 8000
 
@@ -19,7 +19,7 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
 WORKDIR /opt/
 
 
-RUN git clone git@git.gungunqian.cn:qiangungun/ops_inception.git && \
+RUN git clone https://github.com/healscm/ops_inception.git && \
     cd /opt/ops_inception/src && pip3 install -r requirements.txt && \
     cp -rf /opt/ops_inception/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/ops_inception/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
