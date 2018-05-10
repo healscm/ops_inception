@@ -212,8 +212,148 @@ if [ -z $PASSWORD ];then
    read -p "Set ops_inception admin User Passwrod: " PASSWORD
 fi
 echo "from core.models import Account; Account.objects.create_user(username='admin', password="$PASSWORD", group='admin',is_staff=1)" | python3 manage.py shell &> /dev/null
-echo "from core.models import grained;grained.objects.get_or_create(username='admin', permissions={'mysqlorderlist': '1',
-        'mydailyorder': '1', 'git'：'1', 'ddl': '1', 'ddlcon': [], 'dml': '1', 'dmlcon': [], 'dic': '1', 'diccon': [], 'dicedit': '0', 'query': '1', 'querycon': [], 'user': '1', 'base': '1', 'dicexport': '0'})" | python3 manage.py shell &> /dev/null
+echo "from core.models import grained;grained.objects.get_or_create(username='admin', permissions={'ddl': '1', 'ddlcon': [], 'dml': '1', 'dmlcon': [], 'dic': '1', 'diccon': [], 'dicedit': '0', 'query': '1', 'querycon': [], 'user': '1', 'base': '1', 'dicexport': '0', 'person': []})" | python3 manage.py shell &> /dev/null
+
+# 13
+Data="13) Start Inception, Please wait..."
+echo -n $Data
+cd /opt/ops_inception/install/ && tar xvf inception.tar &> /dev/null
+ps aux | grep Inception | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+/opt/ops_inception/install/inception/bin/Inception --defaults-file=/opt/ops_inception/install/inception/bin/inc.cnf &> /dev/null & 
+if [ $? = 0 ];then
+  success "$Data" 
+else
+  failure "$Data"
+fi
+
+# 14
+Data="14) Start ops_inception, Please wait..."
+echo -n $Data
+cd /opt/ops_inception/src
+ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+python3 manage.py runserver 0.0.0.0:8000 &> /dev/null &
+if [ $? = 0 ];then
+  success "$Data" 
+else
+  failure "$Data"
+fi
+}
+
+restart() {
+  Data="01) Restart Nginx"
+  echo -n $Data
+  if [ $VERSION = 2 ];then
+    service nginx restart &>/dev/null && success "$Data" || failure "$Data"
+  else
+    systemctl restart nginx &>/dev/null && success "$Data" || failure "$Data"
+  fi  
+  
+  Data="02) Restart MySQL"
+  echo -n $Data
+  if [ $VERSION = 2 ];then
+    service mysqld restart &>/dev/null && success "$Data" || failure "$Data"
+  else
+    systemctl restart mysqld &>/dev/null && success "$Data" || failure "$Data"
+  fi  
+  
+  Data="03) Restart Inception"
+  echo -n $Data
+  ps aux | grep Inception | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+  /opt/ops_inception/install/inception/bin/Inception --defaults-file=/opt/ops_inception/install/inception/bin/inc.cnf &> /dev/null & 
+  if [ $? = 0 ];then
+    success "$Data" 
+  else
+    failure "$Data"
+  fi
+  sleep 1
+  
+  Data="04) Restart ops_inception"
+  echo -n $Data
+  cd /opt/ops_inception/src
+  ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+  python3 manage.py runserver 0.0.0.0:8000 &> /dev/null &
+  if [ $? = 0 ];then
+    success "$Data" 
+  else
+    failure "$Data"
+  fi
+  echo ""
+}
+
+stop() {
+  Data="01) Stop Nginx"
+  echo -n $Data
+  if [ $VERSION = 2 ];then
+    service nginx stop &>/dev/null && success "$Data" || failure "$Data"
+  else
+    systemctl stop nginx &>/dev/null && success "$Data" || failure "$Data"
+  fi  
+  
+  Data="02) Stop MySQL"
+  echo -n $Data
+  if [ $VERSION = 2 ];then
+    service mysqld stop &>/dev/null && success "$Data" || failure "$Data"
+  else
+    systemctl stop mysqld &>/dev/null && success "$Data" || failure "$Data"
+  fi  
+  
+  Data="03) Stop Inception"
+  echo -n $Data
+  ps aux | grep Inception | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+  if [ $? = 0 ];then
+    success "$Data" 
+  else
+    success "$Data"
+  fi
+  sleep 1
+  
+  Data="04) Stop ops_inception"
+  echo -n $Data
+  cd /opt/ops_inception/src
+  ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+  if [ $? = 0 ];then
+    success "$Data" 
+  else
+    success "$Data"
+  fi
+  echo ""
+}
+
+show() {
+cat <<END;
+----------------------------------------------------------------
+Nginx conf     |   /etc/nginx/nginx.conf                       |
+Nginx data     |   /usr/share/nginx/html/*                     |
+MySQL conf     |   /etc/my.cnf                                 |
+MySQL data     |   /var/lib/mysql/*                            |
+Inception conf |   /opt/ops_inception/install/inception/bin/inc.cnf |
+ops_inception conf  |   /opt/ops_inception/src/deploy.conf               |
+ops_inception log   |   /opt/ops_inception/src/log/*                     |
+----------------------------------------------------------------
+END
+}
+
+
+read -p "Please select enter a valid sequence number: " NUMBER
+echo
+case "$NUMBER" in
+  1)
+    restart
+    ;;
+  2)
+    stop 
+    ;;
+  3)
+    show
+    ;;
+  4)
+    install
+    ;;
+  *)
+    help
+    exit 1
+esac
+
 
 # 13
 Data="13) Start Inception, Please wait..."
