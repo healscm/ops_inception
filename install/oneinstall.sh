@@ -127,7 +127,7 @@ fi
 Data="05) Git Clone ops_inception, Please wait..."
 echo -n $Data
 cd /opt && rm -fr ops_inception_back &> /dev/null && mv ops_inception ops_inception_back &> /dev/null
-git clone git@git.gungunqian.cn:qiangungun/ops_inception.git &>/dev/null || failure "$Data"
+git clone https://github.com/healscm/ops_inception.git &>/dev/null || failure "$Data"
 cd /opt/ops_inception/src &> /dev/null
 pip3 install -r requirements.txt &>/dev/null && success "$Data" || failure "$Data" 
 
